@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Device Security Check</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:Arial,sans-serif;background:#111827;color:#fff;padding:20px}
+.card{width:min(520px,100%);background:#1f2937;border-radius:24px;padding:32px;text-align:center;box-shadow:0 20px 60px #0008}
+.icon{font-size:54px} h1{font-size:27px;margin:8px 0 12px}
+p{color:#cbd5e1;line-height:1.5}
+button{border:0;border-radius:12px;padding:14px 22px;font-size:16px;font-weight:bold;cursor:pointer;background:#22c55e;color:#052e16}
+.bar{height:15px;background:#374151;border-radius:20px;overflow:hidden;margin:24px 0}
+.fill{height:100%;width:0;background:#22c55e;border-radius:20px;transition:width .15s}
+#scanArea,#result{display:none}
+#startArea{display:block}
+.small{font-size:13px;color:#94a3b8}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🛡️</div>
+  <div id="startArea">
+    <h1>Device Security Check</h1>
+    <p>Run a quick system check to verify that your device is operating normally.</p>
+    <button onclick="startScan()">START CHECK</button>
+  </div>
+
+  <div id="scanArea">
+    <h1>System Check in Progress</h1>
+    <p id="status">Initializing diagnostic tools…</p>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <p id="percent">0%</p>
+  </div>
+
+  <div id="result">
+    <div class="icon">😂</div>
+    <h1>GOTCHA!</h1>
+    <p><b>Your device is completely fine.</b></p>
+    <p>This was just a harmless joke. Nothing was installed, changed, or collected.</p>
+    <p class="small">No personal information was accessed.</p>
+  </div>
+</div>
+
+<script>
+function startScan(){
+  document.getElementById('startArea').style.display='none';
+  document.getElementById('scanArea').style.display='block';
+
+  const fill=document.getElementById('fill');
+  const pct=document.getElementById('percent');
+  const status=document.getElementById('status');
+  const messages=[
+    "Initializing diagnostic tools…",
+    "Checking system status…",
+    "Analyzing device configuration…",
+    "Running final verification…"
+  ];
+  let n=0;
+
+  const timer=setInterval(()=>{
+    n+=2;
+    fill.style.width=n+"%";
+    pct.textContent=n+"%";
+    status.textContent=messages[Math.min(3,Math.floor(n/26))];
+
+    if(n>=100){
+      clearInterval(timer);
+      setTimeout(()=>{
+        document.getElementById('scanArea').style.display='none';
+        document.getElementById('result').style.display='block';
+      },500);
+    }
+  },70);
+}
+</script>
+</body>
+</html>
